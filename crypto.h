@@ -25,4 +25,4 @@ std::string vigenere(std::string text, std::string keyword);
 std::string rail_fence(std::string text, int key);
 
 // https://en.wikipedia.org/wiki/XOR_cipher
-std::string xor(std::string text, char key);
+std::string cxor(std::string text, char key);

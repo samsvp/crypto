@@ -10,9 +10,9 @@
 #include <stack>
 #include <omp.h>
 #include <random>
-#include <filesystem>
+#include <experimental/filesystem>
 
-namespace fs = std::filesystem;
+namespace fs = std::experimental::filesystem;
 
 using u32 = uint_least32_t;
 using engine = std::mt19937;
@@ -118,7 +118,7 @@ std::string rail_fence(std::string text, int key)
 	return encrypted;
 }
 
-std::string xor(std::string text, char key)
+std::string cxor(std::string text, char key)
 {
 	std::string encrypted;
 	for (auto& letter : text) encrypted += (letter ^ key);
@@ -129,8 +129,8 @@ std::string xor(std::string text, char key)
 std::string absolute_path(std::string relative_path)
 {
 	std::string file_path = __FILE__;
-	std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-	return dir_path + "\\" + relative_path;
+	std::string dir_path = file_path.substr(0, file_path.rfind("/"));
+	return dir_path + "/" + relative_path;
 }
 
 /// returns a vector containing the text of all boo9ks inside the data folder.
@@ -247,7 +247,7 @@ std::vector<std::string> get_random_paragraphs(std::vector<std::string> paragrap
 
 void create_training_set(int size, bool training = true)
 {
-	std::string folder = training ? "train\\" : "val\\";
+	std::string folder = training ? "train/" : "val/";
 
 	std::vector<std::string> file_names = read_data();
 
@@ -274,19 +274,19 @@ void create_training_set(int size, bool training = true)
 		{
 		case 0:
 			encrypted_string = caesar(paragraphs_string, get_random_number(1, 25)); // from B to Z
-			algorithm_name = "caesar\\";
+			algorithm_name = "caesar/";
 			break;
 		case 1:
 			encrypted_string = vigenere(paragraphs_string, get_random_string());
-			algorithm_name = "vigenere\\";
+			algorithm_name = "vigenere/";
 			break;
 		case 2:
 			encrypted_string = rail_fence(paragraphs_string, get_random_number(2, 8));
-			algorithm_name = "rail_fence\\";
+			algorithm_name = "rail_fence/";
 			break;
 		case 3:
-			encrypted_string = xor (paragraphs_string, get_random_number(0, 127)); // all char range
-			algorithm_name = "xor\\";
+			encrypted_string = cxor(paragraphs_string, get_random_number(0, 127)); // all char range
+			algorithm_name = "xor/";
 			break;
 		default:
 			throw;

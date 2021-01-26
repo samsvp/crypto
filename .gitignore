@@ -6,6 +6,9 @@ val/*
 .vs/
 .vscode/
 
+# Build
+build/
+
 # Prerequisites
 *.d
 
